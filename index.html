@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rubén Pérez Iniesta — Recital de Percusión</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cobre: #e8845a;
+    --cobre-dark: #9a4520;
+    --cobre-light: #f0a880;
+    --cobre-xlight: #f5c9ae;
+    --negro: #080704;
+    --negro-2: #0e0b08;
+    --negro-3: #181310;
+    --negro-4: #231a13;
+    --negro-5: #2e2118;
+    --blanco: #f5f0ec;
+    --gris: #7a6e66;
+    --gris-claro: #b0a89e;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    background: var(--negro);
+    color: var(--blanco);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ── GRAIN OVERLAY ── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    padding: 22px 52px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(8,7,4,0.98) 0%, rgba(8,7,4,0) 100%);
+    backdrop-filter: blur(0px);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--blanco);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gris);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--cobre); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 32px 100px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('portada.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    filter: brightness(0.28) saturate(0.7);
+    transform: scale(1.04);
+    z-index: 0;
+  }
+
+  .hero-gradient {
+    position: absolute;
+    inset: 0;
+    background: 
+      linear-gradient(to bottom, rgba(8,7,4,0.5) 0%, rgba(8,7,4,0.1) 40%, rgba(8,7,4,0.1) 60%, rgba(8,7,4,0.95) 100%),
+      radial-gradient(ellipse at center, rgba(232,132,90,0.06) 0%, transparent 70%);
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .hero-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--cobre);
+    border: 0.5px solid var(--cobre-dark);
+    padding: 6px 22px;
+    border-radius: 30px;
+    margin-bottom: 36px;
+    animation: fadeUp 1.2s ease both;
+  }
+
+  .hero-nombre {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(80px, 16vw, 160px);
+    font-weight: 600;
+    color: var(--blanco);
+    line-height: 0.88;
+    letter-spacing: -0.01em;
+    animation: fadeUp 1.2s 0.1s ease both;
+  }
+
+  .hero-divider {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--cobre), transparent);
+    margin: 28px 0;
+    animation: expandV 1.2s 0.25s ease both;
+  }
+
+  .hero-recital {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(18px, 3vw, 26px);
+    color: var(--cobre-light);
+    letter-spacing: 0.03em;
+    animation: fadeUp 1.2s 0.3s ease both;
+  }
+
+  .hero-meta {
+    margin-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    animation: fadeUp 1.2s 0.4s ease both;
+  }
+  .hero-meta span {
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gris);
+  }
+  .hero-meta .profesor {
+    font-size: 11px;
+    color: var(--gris);
+    letter-spacing: 0.1em;
+    font-style: italic;
+    text-transform: none;
+  }
+
+  /* COUNTDOWN */
+  .countdown-wrap {
+    margin-top: 52px;
+    animation: fadeUp 1.2s 0.5s ease both;
+  }
+  .countdown-label {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gris);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .countdown {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+  }
+  .cd-bloque {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px;
+    position: relative;
+  }
+  .cd-bloque:not(:last-child)::after {
+    content: ':';
+    position: absolute;
+    right: -6px;
+    top: 6px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40px;
+    font-weight: 300;
+    color: var(--negro-5);
+    line-height: 1;
+  }
+  .cd-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(44px, 7vw, 60px);
+    font-weight: 300;
+    color: var(--blanco);
+    line-height: 1;
+    min-width: 2ch;
+    text-align: center;
+  }
+  .cd-etiq {
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gris);
+    margin-top: 8px;
+  }
+
+  .scroll-cue {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    animation: fadeUp 1.2s 1.2s ease both;
+  }
+  .scroll-cue span {
+    font-size: 9px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--gris);
+  }
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--cobre-dark), transparent);
+    animation: scrollPulse 2.5s ease-in-out infinite;
+  }
+
+  /* ── DIVISOR GLOBAL ── */
+  .divider {
+    width: calc(100% - 96px);
+    max-width: 1100px;
+    height: 0.5px;
+    background: var(--negro-4);
+    margin: 0 auto;
+  }
+
+  /* ── SECCIONES ── */
+  section {
+    padding: 100px 52px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--cobre);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .eyebrow::after {
+    content: '';
+    height: 0.5px;
+    width: 60px;
+    background: var(--negro-5);
+  }
+
+  .sec-titulo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(34px, 5vw, 54px);
+    font-weight: 600;
+    color: var(--blanco);
+    line-height: 1.05;
+    margin-bottom: 56px;
+  }
+  .sec-titulo em {
+    font-style: italic;
+    color: var(--cobre-light);
+  }
+
+  /* ── HISTORIA ── */
+  .historia-bloque {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px 64px;
+    align-items: center;
+    margin-bottom: 72px;
+  }
+  .historia-bloque:last-child { margin-bottom: 0; }
+  .historia-bloque.invertido { direction: rtl; }
+  .historia-bloque.invertido > * { direction: ltr; }
+  .historia-bloque.dos-fotos {
+    grid-template-columns: 1fr 1fr;
+  }
+  .historia-bloque.dos-fotos .historia-fotos-par {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .historia-texto p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(17px, 1.6vw, 20px);
+    line-height: 1.85;
+    color: var(--gris-claro);
+    font-weight: 300;
+  }
+
+  .historia-foto {
+    position: relative;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .historia-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.88) saturate(0.85);
+    transition: filter 0.5s, transform 0.5s;
+  }
+  .historia-foto:hover img {
+    filter: brightness(0.95) saturate(1);
+    transform: scale(1.02);
+  }
+  .historia-foto::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 0.5px solid rgba(232,132,90,0.15);
+    border-radius: 3px;
+    pointer-events: none;
+  }
+  .foto-tall { aspect-ratio: 3/4; }
+  .foto-wide { aspect-ratio: 4/3; }
+  .foto-sq   { aspect-ratio: 1; }
+
+  /* ── GALERÍA ── */
+  .galeria-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .galeria-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+    aspect-ratio: 4/3;
+    cursor: pointer;
+  }
+  .galeria-item:nth-child(1) { grid-column: span 2; aspect-ratio: 16/9; }
+  .galeria-item:nth-child(5) { grid-column: span 2; aspect-ratio: 16/9; }
+  .galeria-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.82) saturate(0.8);
+    transition: filter 0.5s, transform 0.6s;
+  }
+  .galeria-item:hover img {
+    filter: brightness(1) saturate(1.05);
+    transform: scale(1.05);
+  }
+  .galeria-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 0.5px solid rgba(232,132,90,0.1);
+    pointer-events: none;
+  }
+
+  /* Lightbox */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(8,7,4,0.96);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: 90vw;
+    max-height: 88vh;
+    object-fit: contain;
+    border-radius: 3px;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 24px; right: 32px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    color: var(--gris);
+    cursor: pointer;
+    transition: color 0.3s;
+    background: none;
+    border: none;
+    line-height: 1;
+  }
+  .lightbox-close:hover { color: var(--blanco); }
+
+  /* ── REPERTORIO ── */
+  .repertorio-lista { display: flex; flex-direction: column; }
+  .obra-item {
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    gap: 28px;
+    padding: 28px 0;
+    border-bottom: 0.5px solid var(--negro-4);
+    align-items: center;
+    transition: padding-left 0.3s;
+  }
+  .obra-item:first-child { border-top: 0.5px solid var(--negro-4); }
+  .obra-item:hover { padding-left: 8px; }
+  .obra-item:hover .obra-num { color: var(--cobre); }
+  .obra-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 44px;
+    font-weight: 300;
+    color: var(--negro-5);
+    line-height: 1;
+    text-align: right;
+    transition: color 0.3s;
+  }
+  .obra-info {}
+  .obra-titulo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--blanco);
+    margin-bottom: 5px;
+    line-height: 1.2;
+  }
+  .obra-movs {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--gris);
+    margin-top: 4px;
+  }
+  .obra-compositor {
+    font-size: 12px;
+    color: var(--gris);
+    letter-spacing: 0.05em;
+  }
+  .obra-tag {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--cobre);
+    border: 0.5px solid var(--cobre-dark);
+    padding: 5px 16px;
+    border-radius: 30px;
+    white-space: nowrap;
+  }
+
+  /* ── ASÍ ES RUBÉN ── */
+  .palabras-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 20px;
+    align-items: baseline;
+    line-height: 1;
+  }
+  .palabra {
+    font-family: 'Cormorant Garamond', serif;
+    transition: color 0.3s, transform 0.3s;
+    cursor: default;
+    display: inline-block;
+  }
+  .palabra:hover { transform: translateY(-2px); color: var(--blanco) !important; }
+  .p-xl  { font-size: clamp(42px,6vw,68px);  font-weight: 600; font-style: normal; color: var(--blanco); }
+  .p-lg  { font-size: clamp(28px,4vw,46px);  font-weight: 300; font-style: italic; color: var(--cobre-light); }
+  .p-md  { font-size: clamp(20px,2.8vw,32px);font-weight: 300; font-style: italic; color: var(--gris-claro); }
+  .p-sm  { font-size: clamp(15px,1.8vw,22px);font-weight: 300; font-style: italic; color: var(--gris); }
+  .p-sep { font-family: 'Cormorant Garamond', serif; color: var(--negro-5); font-size: 32px; align-self: center; }
+
+  /* ── AMIGOS ── */
+  .amigos-titulo-wrap {
+    text-align: center;
+    margin-bottom: 52px;
+  }
+  .amigos-gracias {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(44px, 8vw, 96px);
+    font-weight: 600;
+    color: var(--blanco);
+    line-height: 1;
+    display: block;
+    letter-spacing: -0.01em;
+  }
+  .amigos-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(18px, 2.5vw, 26px);
+    color: var(--cobre-light);
+    margin-top: 12px;
+    display: block;
+  }
+  .amigos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .amigos-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+    aspect-ratio: 4/3;
+    cursor: pointer;
+  }
+  .amigos-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.85) saturate(0.85);
+    transition: filter 0.5s, transform 0.6s;
+  }
+  .amigos-item:hover img {
+    filter: brightness(1) saturate(1.1);
+    transform: scale(1.04);
+  }
+  .amigos-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 0.5px solid rgba(232,132,90,0.12);
+    pointer-events: none;
+  }
+
+  /* ── MENSAJES ── */
+  .mensajes-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 72px;
+    align-items: start;
+  }
+  .mensajes-form { display: flex; flex-direction: column; gap: 12px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .form-input, .form-textarea {
+    background: var(--negro-3);
+    border: 0.5px solid var(--negro-5);
+    border-radius: 3px;
+    padding: 14px 18px;
+    color: var(--blanco);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.3s;
+    width: 100%;
+  }
+  .form-input::placeholder, .form-textarea::placeholder { color: var(--gris); }
+  .form-input:focus, .form-textarea:focus { border-color: var(--cobre-dark); }
+  .form-textarea { resize: none; height: 110px; }
+  .form-btn {
+    align-self: flex-start;
+    background: transparent;
+    border: 0.5px solid var(--cobre-dark);
+    color: var(--cobre);
+    padding: 13px 32px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.3s, color 0.3s;
+  }
+  .form-btn:hover { background: var(--cobre-dark); color: var(--blanco); }
+
+  .mensajes-lista { display: flex; flex-direction: column; gap: 14px; max-height: 520px; overflow-y: auto; padding-right: 8px; }
+  .mensajes-lista::-webkit-scrollbar { width: 2px; }
+  .mensajes-lista::-webkit-scrollbar-track { background: var(--negro-3); }
+  .mensajes-lista::-webkit-scrollbar-thumb { background: var(--cobre-dark); }
+
+  .msg-card {
+    background: var(--negro-2);
+    border: 0.5px solid var(--negro-4);
+    border-radius: 3px;
+    padding: 20px 22px;
+    position: relative;
+    animation: fadeUp 0.5s ease both;
+  }
+  .msg-comilla {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px;
+    color: var(--negro-5);
+    position: absolute;
+    top: 6px; left: 16px;
+    line-height: 1;
+  }
+  .msg-texto {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--gris-claro);
+    line-height: 1.65;
+    margin-top: 22px;
+    margin-bottom: 14px;
+  }
+  .msg-autor {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cobre);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 0.5px solid var(--negro-4);
+    padding: 52px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .footer-left {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .footer-nombre {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--negro-5);
+    letter-spacing: 0.04em;
+  }
+  .footer-info {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--negro-5);
+    line-height: 1.9;
+  }
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    opacity: 0.35;
+    transition: opacity 0.3s;
+  }
+  .footer-logo:hover { opacity: 0.6; }
+  .footer-logo img {
+    height: 48px;
+    width: auto;
+    filter: brightness(0) invert(1);
+  }
+  .footer-logo span {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--negro-5);
+    max-width: 160px;
+    line-height: 1.5;
+  }
+
+  /* ── ANIMACIONES ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes expandV {
+    from { transform: scaleY(0); opacity: 0; }
+    to   { transform: scaleY(1); opacity: 1; }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(0.9); }
+    50%       { opacity: 1;   transform: scaleY(1.1); }
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 18px 24px; }
+    .nav-links { display: none; }
+    section { padding: 72px 24px; }
+    .divider { width: calc(100% - 48px); }
+
+    .historia-bloque {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      margin-bottom: 52px;
+    }
+    .historia-bloque.invertido { direction: ltr; }
+    .historia-bloque.dos-fotos .historia-fotos-par {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .galeria-grid { grid-template-columns: 1fr 1fr; }
+    .galeria-item:nth-child(1) { grid-column: span 2; }
+    .galeria-item:nth-child(5) { grid-column: span 2; }
+
+    .obra-item {
+      grid-template-columns: 44px 1fr;
+      gap: 16px;
+    }
+    .obra-tag { display: none; }
+
+    .amigos-grid { grid-template-columns: 1fr; }
+
+    .mensajes-layout { grid-template-columns: 1fr; gap: 48px; }
+    .form-row { grid-template-columns: 1fr; }
+
+    footer { padding: 36px 24px; flex-direction: column; align-items: flex-start; }
+    .cd-bloque { padding: 0 12px; }
+  }
+
+  @media (max-width: 480px) {
+    .hero-nombre { font-size: clamp(60px, 18vw, 80px); }
+    .galeria-grid { grid-template-columns: 1fr; }
+    .galeria-item:nth-child(1),
+    .galeria-item:nth-child(5) { grid-column: span 1; aspect-ratio: 4/3; }
+    .historia-bloque.dos-fotos .historia-fotos-par { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">Rubén P. I.</a>
+  <ul class="nav-links">
+    <li><a href="#historia">Historia</a></li>
+    <li><a href="#galeria">Galería</a></li>
+    <li><a href="#repertorio">Programa</a></li>
+    <li><a href="#palabras">Así es</a></li>
+    <li><a href="#amigos">Amigos</a></li>
+    <li><a href="#mensajes">Mensajes</a></li>
+  </ul>
+</nav>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">×</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<div id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-gradient"></div>
+
+  <div class="hero-content">
+    <span class="hero-eyebrow">Recital de Percusión · Final de Enseñanzas Profesionales</span>
+    <h1 class="hero-nombre">Rubén<br>Pérez Iniesta</h1>
+    <div class="hero-divider"></div>
+    <p class="hero-recital">Recital de Graduación</p>
+    <div class="hero-meta">
+      <span>Miércoles 6 de mayo de 2026 · 18:30 h</span>
+      <span>Sala Polivalente · Conservatorio Profesional de Música de Murcia</span>
+      <span class="profesor">Profesor: Julián Cantos García</span>
+    </div>
+
+    <div class="countdown-wrap">
+      <p class="countdown-label">Faltan</p>
+      <div class="countdown">
+        <div class="cd-bloque">
+          <span class="cd-num" id="cd-dias">--</span>
+          <span class="cd-etiq">días</span>
+        </div>
+        <div class="cd-bloque">
+          <span class="cd-num" id="cd-horas">--</span>
+          <span class="cd-etiq">horas</span>
+        </div>
+        <div class="cd-bloque">
+          <span class="cd-num" id="cd-min">--</span>
+          <span class="cd-etiq">min</span>
+        </div>
+        <div class="cd-bloque">
+          <span class="cd-num" id="cd-seg">--</span>
+          <span class="cd-etiq">seg</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-cue">
+    <span>Su historia</span>
+    <div class="scroll-line"></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════ HISTORIA ══════════════════ -->
+<section id="historia">
+  <p class="eyebrow reveal">Su trayectoria</p>
+  <h2 class="sec-titulo reveal">Una historia hecha<br><em>de ritmo y dedicación</em></h2>
+
+  <!-- Párrafo 1 — dos fotos -->
+  <div class="historia-bloque dos-fotos reveal">
+    <div class="historia-texto">
+      <p>Como muchas buenas historias, la suya no empezó con una sola pasión clara, sino con muchas. Durante sus primeros años probó distintos caminos: desde ponerse bajo palos como portero de fútbol hasta navegar como regatista. Pero fue casi sin buscarlo, en un entorno familiar lleno de música, donde todo empezó a tomar forma.</p>
+    </div>
+    <div class="historia-fotos-par">
+      <div class="historia-foto foto-sq">
+        <img src="historia_01.jpeg" alt="Rubén de joven" loading="lazy">
+      </div>
+      <div class="historia-foto foto-sq">
+        <img src="historia_02.jpeg" alt="Primeros años" loading="lazy">
+      </div>
+    </div>
+  </div>
+
+  <!-- Párrafo 2 -->
+  <div class="historia-bloque invertido reveal">
+    <div class="historia-texto">
+      <p>Acompañando a su padre en la tuna, descubrió la pandereta. Lo que empezó como un juego pronto se convirtió en algo más: ritmo, curiosidad y una conexión natural con la música. Paralelamente, formó parte del coro del colegio, dando sus primeros pasos también en el ámbito vocal.</p>
+    </div>
+    <div class="historia-foto foto-wide">
+      <img src="historia_03.jpeg" alt="La tuna y la pandereta" loading="lazy">
+    </div>
+  </div>
+
+  <!-- Párrafo 3 -->
+  <div class="historia-bloque reveal">
+    <div class="historia-texto">
+      <p>El verdadero punto de inflexión llegó al incorporarse a la Banda de Música de Cabezo de Torres, donde comenzó de manera más seria sus estudios de solfeo y percusión. Allí empezó a construir las bases musicales que marcarían su evolución.</p>
+    </div>
+    <div class="historia-foto foto-wide">
+      <img src="historia_04.jpeg" alt="Banda de Música de Cabezo de Torres" loading="lazy">
+    </div>
+  </div>
+
+  <!-- Párrafo 4 -->
+  <div class="historia-bloque invertido reveal">
+    <div class="historia-texto">
+      <p>Con el tiempo, y tras consolidar su formación inicial, decidió dar un paso más y presentarse a las pruebas de acceso al Conservatorio Profesional de Música de Murcia, donde fue admitido y ha desarrollado su formación académica en percusión, creciendo tanto técnica como musicalmente.</p>
+    </div>
+    <div class="historia-foto foto-wide">
+      <img src="historia_05.jpeg" alt="Conservatorio Profesional de Música de Murcia" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════ GALERÍA ══════════════════ -->
+<section id="galeria">
+  <p class="eyebrow reveal">Momentos</p>
+  <h2 class="sec-titulo reveal">Imágenes de<br><em>una vida musical</em></h2>
+
+  <div class="galeria-grid reveal">
+    <div class="galeria-item" onclick="openLightbox('galeria_01.jpeg')">
+      <img src="galeria_01.jpeg" alt="Momento 1" loading="lazy">
+    </div>
+    <div class="galeria-item" onclick="openLightbox('galeria_02.jpeg')">
+      <img src="galeria_02.jpeg" alt="Momento 2" loading="lazy">
+    </div>
+    <div class="galeria-item" onclick="openLightbox('galeria_03.jpeg')">
+      <img src="galeria_03.jpeg" alt="Momento 3" loading="lazy">
+    </div>
+    <div class="galeria-item" onclick="openLightbox('galeria_04.jpeg')">
+      <img src="galeria_04.jpeg" alt="Momento 4" loading="lazy">
+    </div>
+    <div class="galeria-item" onclick="openLightbox('galeria_05.jpeg')">
+      <img src="galeria_05.jpeg" alt="Momento 5" loading="lazy">
+    </div>
+    <div class="galeria-item" onclick="openLightbox('galeria_06.jpeg')">
+      <img src="galeria_06.jpeg" alt="Momento 6" loading="lazy">
+    </div>
+    <div class="galeria-item" onclick="openLightbox('galeria_07.jpeg')">
+      <img src="galeria_07.jpeg" alt="Momento 7" loading="lazy">
+    </div>
+    <div class="galeria-item" onclick="openLightbox('galeria_08.jpeg')">
+      <img src="galeria_08.jpeg" alt="Momento 8" loading="lazy">
+    </div>
+    <div class="galeria-item" onclick="openLightbox('galeria_09.jpeg')">
+      <img src="galeria_09.jpeg" alt="Momento 9" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════ REPERTORIO ══════════════════ -->
+<section id="repertorio">
+  <p class="eyebrow reveal">Programa</p>
+  <h2 class="sec-titulo reveal">Las obras del<br><em>recital</em></h2>
+
+  <div class="repertorio-lista">
+    <div class="obra-item reveal">
+      <span class="obra-num">01</span>
+      <div class="obra-info">
+        <div class="obra-titulo">Estudio para Timbales</div>
+        <div class="obra-compositor">Nick Woud</div>
+      </div>
+      <span class="obra-tag">Timbales</span>
+    </div>
+    <div class="obra-item reveal">
+      <span class="obra-num">02</span>
+      <div class="obra-info">
+        <div class="obra-titulo">Rudimento para Caja</div>
+        <div class="obra-compositor">Charles Wilcoxon</div>
+      </div>
+      <span class="obra-tag">Caja</span>
+    </div>
+    <div class="obra-item reveal">
+      <span class="obra-num">03</span>
+      <div class="obra-info">
+        <div class="obra-titulo">Trommel Suite</div>
+        <div class="obra-compositor">S. Fink</div>
+        <div class="obra-movs">II. Toccata · III. Mixta</div>
+      </div>
+      <span class="obra-tag">Caja</span>
+    </div>
+    <div class="obra-item reveal">
+      <span class="obra-num">04</span>
+      <div class="obra-info">
+        <div class="obra-titulo">Mélandie</div>
+        <div class="obra-compositor">J. Steinbauer</div>
+      </div>
+      <span class="obra-tag">Vibráfono</span>
+    </div>
+    <div class="obra-item reveal">
+      <span class="obra-num">05</span>
+      <div class="obra-info">
+        <div class="obra-titulo">Piacer d'amor</div>
+        <div class="obra-compositor">Keiko Abe</div>
+      </div>
+      <span class="obra-tag">Marimba</span>
+    </div>
+    <div class="obra-item reveal">
+      <span class="obra-num">06</span>
+      <div class="obra-info">
+        <div class="obra-titulo">Constructive Interference</div>
+        <div class="obra-compositor">A. Keown</div>
+      </div>
+      <span class="obra-tag">Multipercusión</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════ ASÍ ES RUBÉN ══════════════════ -->
+<section id="palabras">
+  <p class="eyebrow reveal">Así es Rubén</p>
+  <h2 class="sec-titulo reveal">Las palabras que<br><em>lo definen</em></h2>
+
+  <div class="palabras-wrap reveal">
+    <span class="palabra p-xl">Musical</span>
+    <span class="p-sep">·</span>
+    <span class="palabra p-lg">Enérgico</span>
+    <span class="p-sep">·</span>
+    <span class="palabra p-sm">Gracioso</span>
+    <span class="palabra p-xl">Leal</span>
+    <span class="p-sep">·</span>
+    <span class="palabra p-md">Abierto</span>
+    <span class="p-sep">·</span>
+    <span class="palabra p-lg">Libre</span>
+    <span class="palabra p-sm">Payaso</span>
+    <span class="p-sep">·</span>
+    <span class="palabra p-md">Reflexivo</span>
+    <span class="p-sep">·</span>
+    <span class="palabra p-xl">Incondicional</span>
+    <span class="palabra p-sm">Cercano</span>
+    <span class="p-sep">·</span>
+    <span class="palabra p-lg">Auténtico</span>
+    <span class="p-sep">·</span>
+    <span class="palabra p-md">Sincero</span>
+    <span class="palabra p-xl">Carismático</span>
+    <span class="p-sep">·</span>
+    <span class="palabra p-lg">Entregado</span>
+    <span class="p-sep">·</span>
+    <span class="palabra p-md">Atrevido</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════ AMIGOS ══════════════════ -->
+<section id="amigos">
+  <div class="amigos-titulo-wrap reveal">
+    <span class="amigos-gracias">¡Gracias a todos!</span>
+    <span class="amigos-sub">Por estar ahí, siempre</span>
+  </div>
+
+  <div class="amigos-grid reveal">
+    <div class="amigos-item" onclick="openLightbox('amigos_01.jpeg')">
+      <img src="amigos_01.jpeg" alt="Amigos 1" loading="lazy">
+    </div>
+    <div class="amigos-item" onclick="openLightbox('amigos_02.jpeg')">
+      <img src="amigos_02.jpeg" alt="Amigos 2" loading="lazy">
+    </div>
+    <div class="amigos-item" onclick="openLightbox('amigos_03.jpeg')">
+      <img src="amigos_03.jpeg" alt="Amigos 3" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════ MENSAJES ══════════════════ -->
+<section id="mensajes">
+  <p class="eyebrow reveal">Para Rubén</p>
+  <h2 class="sec-titulo reveal">Déjale un<br><em>mensaje</em></h2>
+
+  <div class="mensajes-layout">
+    <div class="mensajes-form reveal">
+      <div class="form-row">
+        <input class="form-input" type="text" id="inp-nombre" placeholder="Tu nombre">
+        <input class="form-input" type="text" id="inp-relacion" placeholder="¿Cómo le conoces?">
+      </div>
+      <textarea class="form-textarea" id="inp-texto" placeholder="Escribe algo para Rubén antes de su gran noche..."></textarea>
+      <button class="form-btn" onclick="enviarMensaje()">Enviar mensaje</button>
+    </div>
+
+    <div class="mensajes-lista reveal" id="mensajes-lista">
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<div class="divider"></div>
+<footer>
+  <div class="footer-left">
+    <span class="footer-nombre">Rubén Pérez Iniesta</span>
+    <div class="footer-info">
+      Recital de Percusión · 6 de mayo de 2026<br>
+      Sala Polivalente · Conservatorio Profesional de Música de Murcia<br>
+      Prof. Julián Cantos García
+    </div>
+  </div>
+  <div class="footer-logo">
+    <img src="logo_conservatorio.png" alt="Conservatorio Profesional de Música de Murcia">
+    <span>Conservatorio Profesional de Música de Murcia</span>
+  </div>
+</footer>
+
+<script>
+  // ── CUENTA ATRÁS ──
+  const fechaRecital = new Date('2026-05-06T18:30:00');
+
+  function actualizarCD() {
+    const ahora = new Date();
+    const diff = fechaRecital - ahora;
+
+    if (diff <= 0) {
+      ['cd-dias','cd-horas','cd-min','cd-seg'].forEach(id => {
+        document.getElementById(id).textContent = '00';
+      });
+      return;
+    }
+
+    const dias  = Math.floor(diff / 86400000);
+    const horas = Math.floor((diff % 86400000) / 3600000);
+    const min   = Math.floor((diff % 3600000) / 60000);
+    const seg   = Math.floor((diff % 60000) / 1000);
+
+    document.getElementById('cd-dias').textContent  = String(dias).padStart(2,'0');
+    document.getElementById('cd-horas').textContent = String(horas).padStart(2,'0');
+    document.getElementById('cd-min').textContent   = String(min).padStart(2,'0');
+    document.getElementById('cd-seg').textContent   = String(seg).padStart(2,'0');
+  }
+
+  actualizarCD();
+  setInterval(actualizarCD, 1000);
+
+  // ── SCROLL REVEAL ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── LIGHTBOX ──
+  function openLightbox(src) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.getElementById('lightbox-img').src = '';
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+
+  // ── MURO DE MENSAJES ──
+  function enviarMensaje() {
+    const nombre   = document.getElementById('inp-nombre').value.trim();
+    const relacion = document.getElementById('inp-relacion').value.trim();
+    const texto    = document.getElementById('inp-texto').value.trim();
+    if (!nombre || !texto) return;
+
+    const card = document.createElement('div');
+    card.className = 'msg-card';
+    card.innerHTML = `
+      <span class="msg-comilla">"</span>
+      <p class="msg-texto">${texto}</p>
+      <span class="msg-autor">${nombre}${relacion ? ' · ' + relacion : ''}</span>
+    `;
+    const lista = document.getElementById('mensajes-lista');
+    lista.prepend(card);
+    lista.scrollTop = 0;
+
+    document.getElementById('inp-nombre').value   = '';
+    document.getElementById('inp-relacion').value = '';
+    document.getElementById('inp-texto').value    = '';
+  }
+
+  // Enter en textarea no envía, Ctrl+Enter sí
+  document.getElementById('inp-texto').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && e.ctrlKey) enviarMensaje();
+  });
+</script>
+</body>
+</html>
