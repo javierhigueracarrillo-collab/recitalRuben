@@ -1080,88 +1080,89 @@
   </div>
 </footer>
 
-<script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, onSnapshot, orderBy, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+  // ── FIREBASE CONFIG ──
+  const firebaseConfig = {
+    apiKey: "AIzaSyAQ-ahJJNbq4TuEa387lkE7XKIMQN5JBzo",
+    authDomain: "recital-ruben.firebaseapp.com",
+    projectId: "recital-ruben",
+    storageBucket: "recital-ruben.firebasestorage.app",
+    messagingSenderId: "1049103601449",
+    appId: "1:1049103601449:web:4a0accf99d6d025ed83138"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
   // ── CUENTA ATRÁS ──
   const fechaRecital = new Date('2026-05-06T18:30:00');
-
   function actualizarCD() {
-    const ahora = new Date();
-    const diff = fechaRecital - ahora;
-
-    if (diff <= 0) {
-      ['cd-dias','cd-horas','cd-min','cd-seg'].forEach(id => {
-        document.getElementById(id).textContent = '00';
-      });
-      return;
-    }
-
-    const dias  = Math.floor(diff / 86400000);
-    const horas = Math.floor((diff % 86400000) / 3600000);
-    const min   = Math.floor((diff % 3600000) / 60000);
-    const seg   = Math.floor((diff % 60000) / 1000);
-
-    document.getElementById('cd-dias').textContent  = String(dias).padStart(2,'0');
-    document.getElementById('cd-horas').textContent = String(horas).padStart(2,'0');
-    document.getElementById('cd-min').textContent   = String(min).padStart(2,'0');
-    document.getElementById('cd-seg').textContent   = String(seg).padStart(2,'0');
+    const diff = fechaRecital - new Date();
+    if (diff <= 0) { ['cd-dias','cd-horas','cd-min','cd-seg'].forEach(id => document.getElementById(id).textContent = '00'); return; }
+    document.getElementById('cd-dias').textContent  = String(Math.floor(diff/86400000)).padStart(2,'0');
+    document.getElementById('cd-horas').textContent = String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+    document.getElementById('cd-min').textContent   = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+    document.getElementById('cd-seg').textContent   = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
   }
-
   actualizarCD();
   setInterval(actualizarCD, 1000);
 
   // ── SCROLL REVEAL ──
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
-    });
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
   }, { threshold: 0.12 });
-
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
   // ── LIGHTBOX ──
-  function openLightbox(src) {
+  window.openLightbox = function(src) {
     document.getElementById('lightbox-img').src = src;
     document.getElementById('lightbox').classList.add('open');
     document.body.style.overflow = 'hidden';
-  }
-  function closeLightbox() {
+  };
+  window.closeLightbox = function() {
     document.getElementById('lightbox').classList.remove('open');
     document.getElementById('lightbox-img').src = '';
     document.body.style.overflow = '';
-  }
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeLightbox();
+  };
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') window.closeLightbox(); });
+
+  // ── MENSAJES FIREBASE ──
+  const q = query(collection(db, "mensajes"), orderBy("timestamp", "desc"));
+  onSnapshot(q, (snapshot) => {
+    const lista = document.getElementById('mensajes-lista');
+    lista.innerHTML = '';
+    snapshot.forEach((doc) => {
+      const d = doc.data();
+      const card = document.createElement('div');
+      card.className = 'msg-card';
+      card.innerHTML = `<span class="msg-comilla">"</span><p class="msg-texto">${d.texto}</p><span class="msg-autor">${d.nombre}${d.relacion ? ' · ' + d.relacion : ''}</span>`;
+      lista.appendChild(card);
+    });
   });
 
-  // ── MURO DE MENSAJES ──
-  function enviarMensaje() {
+  window.enviarMensaje = async function() {
     const nombre   = document.getElementById('inp-nombre').value.trim();
     const relacion = document.getElementById('inp-relacion').value.trim();
     const texto    = document.getElementById('inp-texto').value.trim();
     if (!nombre || !texto) return;
+    const btn = document.querySelector('.form-btn');
+    btn.textContent = 'Enviando...';
+    btn.disabled = true;
+    try {
+      await addDoc(collection(db, "mensajes"), { nombre, relacion, texto, timestamp: serverTimestamp() });
+      document.getElementById('inp-nombre').value = '';
+      document.getElementById('inp-relacion').value = '';
+      document.getElementById('inp-texto').value = '';
+    } catch(e) { alert('Error al enviar. Inténtalo de nuevo.'); }
+    btn.textContent = 'Enviar mensaje';
+    btn.disabled = false;
+  };
 
-    const card = document.createElement('div');
-    card.className = 'msg-card';
-    card.innerHTML = `
-      <span class="msg-comilla">"</span>
-      <p class="msg-texto">${texto}</p>
-      <span class="msg-autor">${nombre}${relacion ? ' · ' + relacion : ''}</span>
-    `;
-    const lista = document.getElementById('mensajes-lista');
-    lista.prepend(card);
-    lista.scrollTop = 0;
-
-    document.getElementById('inp-nombre').value   = '';
-    document.getElementById('inp-relacion').value = '';
-    document.getElementById('inp-texto').value    = '';
-  }
-
-  // Enter en textarea no envía, Ctrl+Enter sí
   document.getElementById('inp-texto').addEventListener('keydown', e => {
-    if (e.key === 'Enter' && e.ctrlKey) enviarMensaje();
+    if (e.key === 'Enter' && e.ctrlKey) window.enviarMensaje();
   });
 </script>
 </body>
