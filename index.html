@@ -879,7 +879,7 @@
     <div class="historia-texto">
       <p>Con el tiempo, y tras consolidar su formación inicial, decidió dar un paso más y presentarse a las pruebas de acceso al Conservatorio Profesional de Música de Murcia, donde fue admitido y ha desarrollado su formación académica en percusión, creciendo tanto técnica como musicalmente.</p>
     </div>
-    <div class="historia-foto foto-tall">
+    <div class="historia-foto foto-sq">
       <img src="historia_05.jpeg" alt="Conservatorio Profesional de Música de Murcia" loading="lazy">
     </div>
   </div>
@@ -952,33 +952,33 @@
       <div class="obra-info">
         <div class="obra-titulo">Trommel Suite</div>
         <div class="obra-compositor">S. Fink</div>
-        <div class="obra-movs">II. Toccata · III. Mixta</div>
+        <div class="obra-movs">II. Toccata · III. Mista</div>
       </div>
       <span class="obra-tag">Caja</span>
     </div>
     <div class="obra-item reveal">
       <span class="obra-num">04</span>
       <div class="obra-info">
-        <div class="obra-titulo">Mélandie</div>
+        <div class="obra-titulo">Constructive Interference</div>
+        <div class="obra-compositor">A. Keown</div>
+      </div>
+      <span class="obra-tag">Multipercusión</span>
+    </div>
+    <div class="obra-item reveal">
+      <span class="obra-num">05</span>
+      <div class="obra-info">
+        <div class="obra-titulo">Melandie</div>
         <div class="obra-compositor">J. Steinbauer</div>
       </div>
       <span class="obra-tag">Vibráfono</span>
     </div>
     <div class="obra-item reveal">
-      <span class="obra-num">05</span>
+      <span class="obra-num">06</span>
       <div class="obra-info">
         <div class="obra-titulo">Piacer d'amor</div>
         <div class="obra-compositor">Keiko Abe</div>
       </div>
       <span class="obra-tag">Marimba</span>
-    </div>
-    <div class="obra-item reveal">
-      <span class="obra-num">06</span>
-      <div class="obra-info">
-        <div class="obra-titulo">Constructive Interference</div>
-        <div class="obra-compositor">A. Keown</div>
-      </div>
-      <span class="obra-tag">Multipercusión</span>
     </div>
   </div>
 </section>
@@ -1054,7 +1054,7 @@
         <input class="form-input" type="text" id="inp-nombre" placeholder="Tu nombre">
         <input class="form-input" type="text" id="inp-relacion" placeholder="¿Cómo le conoces?">
       </div>
-      <textarea class="form-textarea" id="inp-texto" placeholder="Escribe algo para Rubén antes de su gran noche..."></textarea>
+      <textarea class="form-textarea" id="inp-texto" placeholder="Escríbele unas palabras a Rubén..."></textarea>
       <button class="form-btn" onclick="enviarMensaje()">Enviar mensaje</button>
     </div>
 
@@ -1083,7 +1083,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, onSnapshot, orderBy, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
   // ── FIREBASE CONFIG ──
   const firebaseConfig = {
@@ -1130,7 +1130,7 @@
   document.addEventListener('keydown', e => { if (e.key === 'Escape') window.closeLightbox(); });
 
   // ── MENSAJES FIREBASE ──
-  const q = query(collection(db, "mensajes"), orderBy("timestamp", "desc"));
+  const q = query(collection(db, "mensajes"));
   onSnapshot(q, (snapshot) => {
     const lista = document.getElementById('mensajes-lista');
     lista.innerHTML = '';
